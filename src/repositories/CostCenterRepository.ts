@@ -46,7 +46,11 @@ class CostCenterRepository {
 
         try {
 
-            const result = await prisma.costcenter.findMany();
+            const result = await prisma.costcenter.findMany({
+                include: {
+                    cost: true
+                }
+            });
 
             return result;
 

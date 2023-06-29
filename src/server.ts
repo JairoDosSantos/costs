@@ -1,5 +1,6 @@
 import express, { Application, NextFunction, Request, Response } from "express";
 import { CostCenterRoutes } from "./routes/address.routes";
+import { CostRoutes } from "./routes/cost.routes";
 import { EquipamentRoutes } from "./routes/equipament.routes";
 import { GroupsRoutes } from "./routes/groups.routes";
 
@@ -8,6 +9,7 @@ const app: Application = express();
 const groupsRoutes = new GroupsRoutes().getRoutes();
 const addressRoutes = new CostCenterRoutes().getRoutes();
 const equipament = new EquipamentRoutes().getRoutes();
+const cost = new CostRoutes().getRoutes();
 app.use(express.json())
 
 app.use(express.urlencoded({ extended: true }))
@@ -15,6 +17,7 @@ app.use(express.urlencoded({ extended: true }))
 app.use("/group", groupsRoutes)
 app.use("/address", addressRoutes)
 app.use("/equipament", equipament)
+app.use("/cost", cost)
 
 app.use((err: Error, request: Request, response: Response, next: NextFunction) => {
     if (err instanceof Error)
