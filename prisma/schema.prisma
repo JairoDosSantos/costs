@@ -19,11 +19,12 @@ model group {
 }
 
 model costcenter {
-  id              Int     @id @default(autoincrement())
-  description     String  @unique
-  estimatedBudget Decimal @default(0)
-  responsible     String  @default("")
+  id              Int            @id @default(autoincrement())
+  description     String         @unique
+  estimatedBudget Decimal        @default(0)
+  responsible     String         @default("")
   cost            cost[]
+  expectedCost_id expectedCost[]
 
   @@map("costcenters")
 }
@@ -47,6 +48,15 @@ model cost {
   quantity        Decimal
   total_amount    Decimal
   aquisition_date DateTime   @default(now())
+  month           String
   costcenter      costcenter @relation(fields: [costcenter_id], references: [id])
   costcenter_id   Int
+}
+
+model expectedCost {
+  id            Int        @id @default(autoincrement())
+  month         String
+  expected_cost Decimal?
+  costcenter    costcenter @relation(fields: [costcenter_id], references: [id])
+  costcenter_id Int
 }

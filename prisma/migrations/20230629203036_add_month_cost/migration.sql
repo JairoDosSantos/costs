@@ -1,0 +1,2 @@
+-- AlterTable
+ALTER TABLE "cost" ADD COLUMN     "month" INTEGER NOT NULL DEFAULT 5;

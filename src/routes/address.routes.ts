@@ -16,6 +16,7 @@ class CostCenterRoutes {
     getRoutes(): Router {
 
         this.router.get("/", this.addressController.index.bind(this.addressController))
+        this.router.get("/:id", this.addressController.show.bind(this.addressController))
         this.router.post("/", this.addressController.store.bind(this.addressController))
 
         return this.router;

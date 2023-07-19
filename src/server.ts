@@ -1,11 +1,13 @@
+import cors from "cors";
 import express, { Application, NextFunction, Request, Response } from "express";
 import { CostCenterRoutes } from "./routes/address.routes";
 import { CostRoutes } from "./routes/cost.routes";
 import { EquipamentRoutes } from "./routes/equipament.routes";
 import { GroupsRoutes } from "./routes/groups.routes";
 
-
 const app: Application = express();
+
+app.use(cors())
 const groupsRoutes = new GroupsRoutes().getRoutes();
 const addressRoutes = new CostCenterRoutes().getRoutes();
 const equipament = new EquipamentRoutes().getRoutes();

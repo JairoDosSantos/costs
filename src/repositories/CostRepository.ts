@@ -10,12 +10,13 @@ export interface ICreateCost {
     quantity: number;
     total_amount: number;
     aquisition_date: string;
-    costcenter: ICreateCenter
+    costcenter: ICreateCenter;
+    month?: string
 }
 
 class CostRepository {
 
-    async create({ equipament, quantity, price, total_amount, costcenter, aquisition_date }: ICreateCost) {
+    async create({ equipament, quantity, price, total_amount, costcenter, aquisition_date, month }: ICreateCost) {
 
         try {
             const createNewCost = await prisma.cost.create({
@@ -34,8 +35,8 @@ class CostRepository {
                             id: costcenter.id
                         }
                     },
-                    aquisition_date
-
+                    aquisition_date,
+                    month
                 }
             })
 
@@ -67,11 +68,54 @@ class CostRepository {
 
         try {
 
-            const result = await prisma.cost.findMany();
+            const result = await prisma.cost.findMany({
+
+                include: {
+                    costcenter: true,
+                    equipament: {
+                        include: {
+                            group: true
+                        }
+                    }
+                }
+            });
 
             return result;
 
-        } catch (error) {
+        } catch (error: any) {
+
+            throw new Error(error.message);
+        }
+    }
+
+    async findCostByAddressAndGroup(group_id: number, costcenter_id: number, month: string) {
+
+        try {
+
+            const result = await prisma.cost.findMany({
+
+                include: {
+                    costcenter: true,
+                    equipament: {
+                        include: {
+                            group: true
+                        }
+                    }
+                },
+                where: {
+                    equipament: {
+                        group_id,
+
+                    },
+                    costcenter_id,
+                    month
+                }
+            })
+
+            return result
+
+        } catch (error: any) {
+            throw new Error(error.message);
 
         }
     }
@@ -91,10 +135,110 @@ class CostRepository {
                 _sum: {
                     total_amount: true
                 },
+                orderBy: {
+                    costcenter_id: "asc"
+                }
             })
-            return result;
-        } catch (error) {
 
+            return result;
+
+        } catch (error: any) {
+
+            throw new Error(error.message);
+
+        }
+    }
+
+    async totalAmountInPerMonthByCostCenter(centroId: number, firstDayOfYear: Date, lastDayOfYear: Date, searchMonth = "0") {
+
+        try {
+
+            if (firstDayOfYear && lastDayOfYear && searchMonth != "0") {
+                const result = await prisma.cost.groupBy({
+                    by: ["month"],
+                    where: {
+                        aquisition_date: {
+                            lte: lastDayOfYear,
+                            gte: firstDayOfYear,
+                        },
+                        costcenter: {
+                            id: {
+                                equals: centroId
+                            }
+                        },
+                        month: searchMonth
+                    },
+                    _sum: {
+                        total_amount: true
+                    },
+                })
+
+                return result
+
+            } else {
+
+                const result = await prisma.cost.groupBy({
+                    by: ["month"],
+                    where: {
+                        aquisition_date: {
+                            lte: lastDayOfYear,
+                            gte: firstDayOfYear,
+                        },
+                        costcenter: {
+                            id: {
+                                equals: centroId
+                            },
+
+                        }
+                    },
+                    _sum: {
+                        total_amount: true
+                    },
+                })
+
+                return result
+            }
+
+
+
+        } catch (error: any) {
+
+            throw new Error(error.message);
+
+        }
+    }
+
+
+    async totalAmountFromCostCenterByGroup(idCostCenter: number, month = "0") {
+
+        try {
+
+
+            const result = await prisma.cost.findMany({
+                include: {
+                    equipament: {
+                        include: {
+                            group: true
+                        }
+                    },
+                    costcenter: true
+                },
+                where: {
+                    costcenter: {
+                        id: idCostCenter
+                    },
+                    month
+                }
+
+            })
+
+            return result
+
+
+
+        } catch (error: any) {
+
+            throw new Error(error.message);
         }
     }
 

@@ -1,11 +1,10 @@
-import { Decimal } from "@prisma/client/runtime";
 import { CostCenterRepository } from "../repositories/CostCenterRepository";
 
 
 export interface ICreateCenter {
     id?: number;
     description: string;
-    estimatedBudget?: Decimal;
+    estimatedBudget?: number;
     responsible?: string
 }
 
