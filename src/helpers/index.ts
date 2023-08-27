@@ -5,6 +5,8 @@ function groupBy(list: any) {
     const usersByColor = list.reduce((acc: any, value: any) => {
         // Group initialization
 
+
+
         if (!acc[value.equipament.group.description]) {
             if (acc[value.equipament?.group_id]) {
                 acc[value.equipament?.group_id].push(value);
@@ -14,6 +16,8 @@ function groupBy(list: any) {
         }
         // Grouping
         acc[value.equipament.group.description].push(value);
+
+        //   console.log(acc);
 
         return acc;
 

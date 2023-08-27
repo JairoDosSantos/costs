@@ -171,6 +171,9 @@ class CostRepository {
                     _sum: {
                         total_amount: true
                     },
+                    orderBy: {
+                        month: "asc"
+                    }
                 })
 
                 return result
@@ -194,6 +197,9 @@ class CostRepository {
                     _sum: {
                         total_amount: true
                     },
+                    orderBy: {
+                        month: "asc"
+                    }
                 })
 
                 return result
@@ -228,12 +234,14 @@ class CostRepository {
                         id: idCostCenter
                     },
                     month
+                },
+                orderBy: {
+                    id: "asc"
                 }
 
             })
 
             return result
-
 
 
         } catch (error: any) {

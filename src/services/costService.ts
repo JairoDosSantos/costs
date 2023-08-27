@@ -152,10 +152,14 @@ class CostService extends CostRepository {
 
         const grouped = groupBy(results)
 
+
         const getObjectKeys = Object.keys(grouped);
+
         const monthDes = Number(monthNumber.slice(0, 1).replace("/", ""))
+
         const yearDes = monthNumber.slice(1, monthNumber.length).replace("/", "")
-        const monthMounted = arrayMonths[monthDes + 1] + "/" + yearDes
+        const monthMounted = arrayMonths[monthDes - 1] + "/" + yearDes
+
         let result = { group_id: 0, group: "", total_amount: 0, month: monthMounted }
         let totalAmountByGroup: [{ total_amount: number; group: string; month: string }] = [{ total_amount: 0, group: "", month: monthMounted }]
 

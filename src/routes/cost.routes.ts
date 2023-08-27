@@ -18,10 +18,12 @@ class CostRoutes {
 
         const upload = multer()
 
+        //totalAmountFromCostCenterByGroup
+
         this.router.get("/", this.costController.index.bind(this.costController))
         this.router.get("/dash", this.costController.getAddresWithTotalAmount.bind(this.costController))
         this.router.get("/:id/:monthNumber?/:year?", this.costController.getCostByGroup.bind(this.costController))
-        this.router.get("/cc/:centerCostId/date/:dateToSearch?/",
+        this.router.post("/cc/:centerCostId/date/:dateToSearch?/",
             this.costController.getCostByMonthOfOneAddress.bind(this.costController))
         this.router.post("/", upload.single("excel-custo"), this.costController.store.bind(this.costController))
 

@@ -7,8 +7,14 @@ class GroupRepository {
 
     async create({ description }: ICreateGroup) {
         try {
-            const createdGroup = await prisma.group.create({
-                data: {
+            const createdGroup = await prisma.group.upsert({
+                where: {
+                    description
+                },
+                update: {
+                    description
+                },
+                create: {
                     description
                 }
             })

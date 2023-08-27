@@ -66,11 +66,12 @@ class CostController {
 
         const { costcenter_id, group_id, month } = request.params
         const groupId = Number(group_id)
+        const monthEdited = month.replace("-", "/");
         const costCenterId = Number(costcenter_id)
 
         try {
 
-            const result = await this.costService.getCostRepository().findCostByAddressAndGroup(groupId, costCenterId, month);
+            const result = await this.costService.getCostRepository().findCostByAddressAndGroup(groupId, costCenterId, monthEdited);
 
             response.status(200).json(result)
 
@@ -103,8 +104,8 @@ class CostController {
 
         const { id, monthNumber, year } = request.params
         const idCostCenter = Number(id)
-
         const monthToSearch = monthNumber + "/" + year
+
 
         try {
 
@@ -137,7 +138,6 @@ class CostController {
                 monthToSearch = String(dateToSearchNew.getMonth() + 1)
 
             }
-
 
             const result = await this.costService
                 .getCostRepository()
